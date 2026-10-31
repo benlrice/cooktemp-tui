@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+.venv/
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+
+# Recorded cooks are per-user data, not source.
+cook-*.csv
+cook-*.jsonl
+config.toml
