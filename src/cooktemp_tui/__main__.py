@@ -1,10 +1,10 @@
-"""Command line entry point: `python -m cooktemp_tui --demo`."""
+"""Command line entry point: `python -m cooktemp_tui`."""
 
 import argparse
 import sys
 
 from cooktemp_tui.app import CookApp
-from cooktemp_tui.sources import DemoSource
+from cooktemp_tui.sources import DemoSource, RadioProbeSource
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -17,10 +17,10 @@ def main(argv: list[str] | None = None) -> int:
         help="demo only: how many cook seconds pass per real second (default 60)",
     )
     args = parser.parse_args(argv)
-    if not args.demo:
-        print("Only --demo works so far. Real sources are not built yet.", file=sys.stderr)
-        return 2
-    CookApp(DemoSource(speed=args.speed), subtitle="demo").run()
+    if args.demo:
+        CookApp(DemoSource(speed=args.speed), subtitle="demo").run()
+    else:
+        CookApp(RadioProbeSource(), subtitle="radio probe").run()
     return 0
 
 
