@@ -9,7 +9,7 @@ This program runs in Linux, including WSL.
 
 ## Status
 
-Version 0.1.0. The program reads both thermometers. Logging and replay are not available yet.
+The program reads both thermometers. It writes every reading to a file, and it can play a past cook again.
 
 ## What you see
 
@@ -54,12 +54,19 @@ python3 -m venv .venv
 Options:
 
 - `--no-ble` does not use the BLE base.
+- `--replay FILE` plays a cook file again with the original timing. Use `--speed N` to make it faster.
+- `--log-file FILE` writes the readings to FILE. The default file name is `cook-DATE-TIME.jsonl` in the current folder.
+- `--no-log` does not write a cook file.
 - `--demo` shows simulated readings. No hardware is necessary.
-- `--speed N` makes the demo run N times faster than real time. The default is 60.
+- `--speed N` makes the demo or the replay run N times faster than real time. The default is 60 for the demo and 1 for the replay.
 
 ## Important: one BLE connection only
 
 The BLE base accepts one connection at a time. Close the thermometer app on your phone before you start this program. If the phone app is connected, this program cannot connect.
+
+## Cook files
+
+A cook file has one JSON line for each reading. Each line has the seconds since the start, the clock time, the channel, and the temperature in °C. The file also holds the `unplugged` placeholder readings. The `.gitignore` file excludes `cook-*.jsonl` files.
 
 ## How it works
 
@@ -69,7 +76,6 @@ The BLE base accepts one connection at a time. Close the thermometer app on your
 
 ## Plan
 
-- Write every reading to a file. Use `--replay <file>` to play a past cook again.
 - Show the battery level of the BLE base.
 
 ## Develop
