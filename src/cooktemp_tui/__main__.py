@@ -4,11 +4,17 @@ import argparse
 import sys
 
 from cooktemp_tui.app import CookApp
-from cooktemp_tui.sources import DemoSource, RadioProbeSource
+from cooktemp_tui.sources import (
+    BleBaseSource,
+    DemoSource,
+    MergedSource,
+    RadioProbeSource,
+)
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="cooktemp-tui", description=__doc__)
+    parser.add_argument("--no-ble", action="store_true", help="skip the Bluetooth base")
     parser.add_argument("--demo", action="store_true", help="run on simulated readings")
     parser.add_argument(
         "--speed",
@@ -20,7 +26,10 @@ def main(argv: list[str] | None = None) -> int:
     if args.demo:
         CookApp(DemoSource(speed=args.speed), subtitle="demo").run()
     else:
-        CookApp(RadioProbeSource(), subtitle="radio probe").run()
+        sources = [RadioProbeSource()]
+        if not args.no_ble:
+            sources.append(BleBaseSource())
+        CookApp(MergedSource(*sources), subtitle="live").run()
     return 0
 
 
