@@ -113,7 +113,7 @@ class RadioProbeSource:
         """Keep the last line rtl_433 writes to stderr, to show the user."""
         async for raw in proc.stderr:
             line = raw.decode(errors="replace").strip()
-            if line and "error" in line.lower():
+            if line and not line.startswith("Use ") and "error" in line.lower():
                 self.status = line
 
 

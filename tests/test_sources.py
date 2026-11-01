@@ -119,3 +119,19 @@ async def test_merged_source_interleaves_sources():
     got = {(await anext(stream)).channel, (await anext(stream)).channel}
     await stream.aclose()
     assert got == {"ble_food", "radio_pit"}
+
+
+async def test_rtl433_startup_hint_is_not_shown_as_an_error():
+    import asyncio
+
+    script = (
+        "import sys, time;"
+        "print('Use \"-F log\" if you want any messages, warnings, and errors', file=sys.stderr, flush=True);"
+        "time.sleep(1)"
+    )
+    source = RadioProbeSource()
+    source.argv = [sys.executable, "-c", script]
+    task = asyncio.create_task(anext(source.readings()))
+    await asyncio.sleep(0.5)
+    task.cancel()
+    assert source.status == "listening on 433.92 MHz"
