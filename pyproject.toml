@@ -14,6 +14,9 @@ dev = [
     "ruff>=0.6",
 ]
 
+[project.scripts]
+cooktemp-tui = "cooktemp_tui.__main__:main"
+
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 
